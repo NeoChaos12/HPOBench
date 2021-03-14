@@ -1,0 +1,35 @@
+Bootstrap: docker
+From: python:3.7-slim
+
+%labels
+MAINTAINER bansala@cs.uni-freiburg.de
+VERSION v0.0.1
+
+%help
+    Singulraity definition file to build a container for the various BBOB Benchmarks.
+
+%files
+    /home/archit/hiwi/HPOBenchSlim /home/HPOBench
+
+%post
+    apt update -y
+    apt install build-essential git wget -y
+
+    cd /home && mkdir data && cd data
+    git clone --depth 1 https://github.com/numbbo/coco.git
+    cd coco && echo "Installing Python dependencies for COCO." && pip install --no-cache-dir matplotlib scipy six numpy
+    echo "Building COCO." && python do.py run-python
+    echo "Running tests, downloading the test suites bbob-mixint and bbobx-biobj-mixint." && cd code-experiments/build/python
+    python example_experiment2.py suite_name=bbob-mixint
+    python example_experiment2.py suite_name=bbob-biobj-mixint \
+    && echo "COCO has been setup successfully."
+
+    cd /home/HPOBench && pip install --no-cache-dir .
+    echo "Please don't touch the following lines" \
+    && cd / \
+    && mkdir /var/lib/hpobench/ \
+    && chmod -R 777 /var/lib/hpobench/
+    apt clean
+
+%runscript
+    python -s /home/HPOBench/hpobench/container/server_abstract_benchmark.py synthetic.bbob_benchmarks $@
