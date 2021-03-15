@@ -81,7 +81,7 @@ class BBOBBenchmark(AbstractBenchmark):
         c = [configuration.get(p.name) for p in self._config_params]
         val = self.problem(c)
         return {
-            'function_value': val,
+            'function_value': float(val),
             'cost': 1.,  # Constant cost of evaluation, always
             'info': {
                 'rng': rng,
@@ -105,7 +105,7 @@ class BBOBBenchmark(AbstractBenchmark):
                 'references': [],
                 'initial random seed': self.rng,
                 'suite': self.suite,
-                'func_idx': self.task_id,
+                'func_idx': self.func_idx,
                 'instance': self.instance,
                 'suite_options': self.suite_options
                 }
@@ -117,8 +117,10 @@ class BBOBMixIntBenchmark(BBOBBenchmark):
         super(BBOBMixIntBenchmark, self).__init__("bbob-mixint", func_idx, instance, suite_options, fake_fidelity, rng)
 
 
+# DO NOT USE! Work in Progress.
 class BBOBBiobjMixIntBenchmark(BBOBBenchmark):
     def __init__(self, func_idx: int, instance: Optional[str] = "", suite_options: Optional[str] = "",
                  fake_fidelity: bool = False, rng: Union[np.random.RandomState, int, None] = None):
         super(BBOBBiobjMixIntBenchmark, self).__init__("bbob-biobj-mixint", func_idx, instance, suite_options,
                                                        fake_fidelity, rng)
+        raise NotImplementedError("Multi-objective benchmarks are still under construction.")
