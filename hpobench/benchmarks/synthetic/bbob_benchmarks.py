@@ -29,7 +29,8 @@ class BBOBBenchmark(AbstractBenchmark):
         self.suite_object = cocoex.Suite(self.suite, self.instance, self.suite_options)
         self.problem = self.suite_object[self.func_idx]
         self._config_params = self._generate_parameters(self.problem)
-        self._fidelity_params = [CS.CategoricalHyperparameter("FakeFidelity", [True,])] if fake_fidelity else None
+        self._fidelity_params = [CS.OrdinalHyperparameter("FakeFidelity", sequence=[True,])] if bool(fake_fidelity) \
+            else None
 
         super(BBOBBenchmark, self).__init__(rng)
         logger.info("Initialized BBOB Synthetic Benchmark.")
