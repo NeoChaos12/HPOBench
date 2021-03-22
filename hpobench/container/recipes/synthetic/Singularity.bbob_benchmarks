@@ -21,9 +21,8 @@ VERSION v0.0.1
     python example_experiment2.py suite_name=bbob-biobj-mixint \
     && echo "COCO has been setup successfully."
 
-    echo "Setting up HPOBench." && cd /home && git clone https://github.com/automl/HPOBench.git
+    echo "Setting up HPOBench." && cd /home && git clone --branch bbob --depth 1 https://github.com/NeoChaos12/HPOBench.git
     cd HPOBench && echo "Please never push a recipe that checks out any other branch than development or master" \
-    && git checkout development \
     && pip install .
     echo "Please don't touch the following lines" \
     && cd / \
